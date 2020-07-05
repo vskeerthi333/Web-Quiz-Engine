@@ -1,5 +1,8 @@
 package com.quizEngine.webQuiz;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class Result {
 
 	private boolean success; 

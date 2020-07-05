@@ -24,7 +24,7 @@ public class QuizHandler {
 	}
 
 	public Quiz getQuiz(long id) {
-		return quizzes.get((int)id);
+		return quizzes.get((int)id-1);
 	}
 
 	public long lastQuizId() {

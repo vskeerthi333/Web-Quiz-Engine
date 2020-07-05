@@ -1,34 +1,38 @@
 package com.quizEngine.webQuiz;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
+import javax.validation.constraints.*;
 
 public class Quiz {
 
 	private long id;
-	private String title;
-	private String text;
-	private String[] options;
+	@NotBlank @NotNull private String title;
+	@NotBlank @NotNull private String text;
+	@Size(min=2) @NotNull private String[] options;
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-	private int answer;
+	private int[] answer;
 
 	public Quiz() {
+		answer = new int[0];
 	}
 
-	public Quiz(String title, String text, String[] options, int answer) {
-		this.title = title;
-		this.text = text;
-		this.options = options;
-		this.answer = answer; 
+	public boolean validateAnswer(int[] answer) { 
+		if (this.answer.length != 0 && (answer == null || answer.length == 0))
+			return false;
+		if ( this.answer.length != answer.length)
+			return false;
+		for (int i = 0; i < this.answer.length; i++) {
+			if (answer[i] != this.answer[i])
+				return false;
+		}
+		return true; 
 	}
 
-	public boolean validateAnswer(String answer) { 
-		String ans = "answer="+this.answer;
-		return ans.equals(answer); 
-	}
+	public int[] getAnswer() { return answer; }
 
-	public int getAnswer() { return answer; }
-
-	public void setAnswer(int answer) { this.answer = answer; }
+	public void setAnswer(int[] answer) { this.answer = answer; }
 
 	public long getId() { return id; }
 
