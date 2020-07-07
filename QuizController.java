@@ -1,9 +1,11 @@
 package com.quizEngine.webQuiz;
 
+import org.springframework.web.bind.*;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
+import javax.validation.Valid;
 import java.util.*;
 
 @RestController
@@ -26,35 +28,28 @@ public class QuizController {
 
 	@GetMapping("/{id}")
 	public Quiz getQuizById(@PathVariable long id) {
-		Quiz quiz;
-		try {
-			quiz = quizHandler.getQuiz(id);
+		Quiz quiz = quizHandler.getQuiz(id);
+		if (quiz != null) {
+			return quiz;
 		}
-		catch(Exception e) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found");
-		}
-		return quiz;
+		throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found");
 	}
 
 	@PostMapping("/{id}/solve")
 	public Result validateQuiz(@PathVariable long id, @RequestBody Answer answer) {
-		Quiz quiz;
-		try {
-			quiz = quizHandler.getQuiz(id);
+		Quiz quiz = quizHandler.getQuiz(id);
+		if (quiz != null) {
+			boolean success = quizHandler.validateAnswer(quiz.getAnswer(), answer.getAnswer());
+			result.setSuccess(success);
+			if (success) { 
+				result.setFeedback("Congratualations, you're right!"); 
+			} 
+			else { 
+				result.setFeedback("Wrong answer! Please, try again."); 
+			}
+			return result;
 		}
-		catch(Exception e) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found");
-		}
-
-		boolean success = quiz.validateAnswer(answer.getAnswer());
-		result.setSuccess(success);
-		if (success) { 
-			result.setFeedback("Congratualations, you're right!"); 
-		} 
-		else { 
-			result.setFeedback("Wrong answer! Please, try again."); 
-		}
-		return result;
+		throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found");	
 	}
 
 	@PostMapping
