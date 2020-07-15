@@ -1,4 +1,4 @@
-package com.quizEngine.webQuiz;
+package engine;
 
 import java.util.*;
 import java.lang.*;
@@ -10,7 +10,6 @@ public class QuizHandler {
 
 	@Autowired
 	private QuizRepository quizRepository;
-	private static long id = 1;
 
 	public QuizHandler() {
 	}
@@ -22,8 +21,6 @@ public class QuizHandler {
 	}
 
 	public Quiz addQuiz(Quiz quiz) {
-		long count = quizRepository.count();
-		quiz.setId(count++);
 		quizRepository.save(quiz);
 		return quiz;
 	}
@@ -52,6 +49,14 @@ public class QuizHandler {
 			return false;
 		}
 		return true; 
+	}
+
+	public boolean deleteQuiz(Quiz quiz, String userName) {
+		if (quiz.getUserName().equals(userName)) {
+			quizRepository.delete(quiz);
+			return true;
+		}
+		return false;
 	}
 
 }

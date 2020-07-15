@@ -1,8 +1,6 @@
-package com.quizEngine.webQuiz;
+package engine;
 
-import org.springframework.web.server.ResponseStatusException;
-import org.springframework.http.HttpStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 import javax.validation.constraints.*;
 import javax.persistence.*;
 
@@ -10,6 +8,7 @@ import javax.persistence.*;
 public class Quiz {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private long id;
 
 	@NotBlank @NotNull private String title;
@@ -21,13 +20,13 @@ public class Quiz {
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private int[] answer;
 
+	@JsonIgnore
+	private String userName;
+
 	public Quiz() {
-		answer = new int[0];
 	}
 
 	public int[] getAnswer() { return answer; }
-
-	public void setAnswer(int[] answer) { this.answer = answer; }
 
 	public long getId() { return id; }
 
@@ -37,6 +36,10 @@ public class Quiz {
 
 	public String[] getOptions() { return options; }
 
+	public String getUserName() { return userName; }
+
+	public void setUserName(String userName) { this.userName = userName; }
+
 	public void setId(long id) { this.id = id; }
 
 	public void setTitle(String title) { this.title = title; }
@@ -44,6 +47,9 @@ public class Quiz {
 	public void setText(String text) { this.text = text; }
 
 	public void setOptions(String[] options) { this.options = options; }
+
+	public void setAnswer(int[] answer) { this.answer = answer; }
+
 
 }
 

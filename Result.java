@@ -1,4 +1,4 @@
-package com.quizEngine.webQuiz;
+package engine;
 
 import org.springframework.stereotype.Component;
 
@@ -8,9 +8,7 @@ public class Result {
 	private boolean success; 
 	private String feedback;
 
-	public Result(boolean success, String feedback) {
-		this.success = success;
-		this.feedback = feedback;
+	public Result(){
 	}
 
 	public boolean getSuccess() { return success; }
