@@ -14,8 +14,9 @@ public class UserServiceHandler implements UserDetailsService {
 	public UserServiceHandler() {
 	}
 
-	public UserDetails loadUserByUsername(String userName)  {
-		User user = userHandler.getUserCredentials(userName);
+	public UserDetails loadUserByUsername(String userName) {
+		User user = userHandler.getUserCredentialsById(userName);
+		
 		if (user == null) {
 			throw new UsernameNotFoundException("User not found");
 		}

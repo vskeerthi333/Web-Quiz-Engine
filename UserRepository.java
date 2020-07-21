@@ -1,8 +1,9 @@
 package engine;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Component;
 
 @Component
-interface UserRepository extends CrudRepository<User, String> {
+interface UserRepository extends JpaRepository<User, String> {
 }

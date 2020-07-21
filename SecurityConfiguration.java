@@ -24,12 +24,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		//http.csrf().disable().authorizeRequests().anyRequest().authenticated().and().formLogin();
+		http.headers().frameOptions().sameOrigin();
 		http.csrf().disable().authorizeRequests().anyRequest().authenticated().and().httpBasic();
 	}
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userServiceHandler).passwordEncoder(passwordEncoder());
+		//auth.inMemoryAuthentication().withUser("user").password("{noop}user").roles("USER");
 	}
 
 	@Bean

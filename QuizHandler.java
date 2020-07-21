@@ -2,7 +2,9 @@ package engine;
 
 import java.util.*;
 import java.lang.*;
+import java.time.LocalDateTime;  
 import org.springframework.stereotype.Component;
+import org.springframework.data.domain.*;
 import org.springframework.beans.factory.annotation.*;
 
 @Component
@@ -14,11 +16,10 @@ public class QuizHandler {
 	public QuizHandler() {
 	}
 
-	public List<Quiz> getQuizzes() {
-		List<Quiz> quizzes = new ArrayList<Quiz>();
-		quizRepository.findAll().forEach(quizzes::add);
-		return quizzes;
-	}
+	public Page<Quiz> getQuizzes(int pageNo, int pageSize) {
+		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by("id").ascending());
+		return quizRepository.findAll(paging);
+    }
 
 	public Quiz addQuiz(Quiz quiz) {
 		quizRepository.save(quiz);
